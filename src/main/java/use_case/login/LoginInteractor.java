@@ -15,6 +15,18 @@ public class LoginInteractor implements LoginInputBoundary {
         this.loginPresenter = loginOutputBoundary;
     }
 
+    public boolean existsByName(String username) {
+        return userDataAccessObject.existsByName(username);
+    }
+
+    public void save(User user) {
+        userDataAccessObject.save(user);
+    }
+
+    public User get(String username) {
+        return userDataAccessObject.get(username);
+    }
+
     @Override
     public void execute(LoginInputData loginInputData) {
         final String username = loginInputData.getUsername();
@@ -30,7 +42,7 @@ public class LoginInteractor implements LoginInputBoundary {
             else {
 
                 final User user = userDataAccessObject.get(loginInputData.getUsername());
-
+                userDataAccessObject.setCurrentUser(user.getName());
                 final LoginOutputData loginOutputData = new LoginOutputData(user.getName(), false);
                 loginPresenter.prepareSuccessView(loginOutputData);
             }
